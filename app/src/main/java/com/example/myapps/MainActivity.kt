@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         // TODO Template
 
         setContent {
-
+            Navigation()
         }
     }
 }
