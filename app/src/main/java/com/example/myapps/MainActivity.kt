@@ -29,64 +29,7 @@ class MainActivity : ComponentActivity() {
         // TODO Template
 
         setContent {
-            val permission = rememberMultiplePermissionsState(
-                permissions = listOf(
-                    Manifest.permission.RECORD_AUDIO,
-                    Manifest.permission.CAMERA,
-                )
-            )
-            val lifecycleOwner = LocalLifecycleOwner.current
-            DisposableEffect(
-                key1 = lifecycleOwner,
-                effect = {
-                    val observer = LifecycleEventObserver { _, ev ->
-                        if (ev == Lifecycle.Event.ON_RESUME) {
-                            permission.launchMultiplePermissionRequest()
-                        }
-                    }
-                    lifecycleOwner.lifecycle.addObserver(observer)
 
-                    onDispose {
-                        lifecycleOwner.lifecycle.removeObserver(observer)
-                    }
-                })
-
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                permission.permissions.forEach { permissionState ->
-                    when(permissionState.permission) {
-                        Manifest.permission.CAMERA -> {
-                            when {
-                                permissionState.hasPermission -> {
-                                    Text(text = "Camera permission has accepted")
-                                }
-                                permissionState.shouldShowRationale -> {
-                                    Text(text = "Camera permission is needed to access camera")
-                                }
-                                !permissionState.hasPermission && !permissionState.shouldShowRationale -> {
-                                    Text(text = "Camera permission already denied!, enable it in app setting!")
-                                }
-                            }
-                        }
-                        Manifest.permission.RECORD_AUDIO -> {
-                            when {
-                                permissionState.hasPermission -> {
-                                    Text(text = "Record Audio permission has accepted")
-                                }
-                                permissionState.shouldShowRationale -> {
-                                    Text(text = "Record Audio permission is needed to access camera")
-                                }
-                                !permissionState.hasPermission && !permissionState.shouldShowRationale -> {
-                                    Text(text = "Camera permission already denied!, enable it in app setting!")
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 }
